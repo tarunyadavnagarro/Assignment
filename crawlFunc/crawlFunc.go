@@ -29,22 +29,26 @@ func retrieve(uri string) ( int64, time.Duration) {
 }
 
 func pfunc(l Lang) {
-    fmt.Println("name :    xyz")
+    fmt.Println("name :   %v",l.Name)
     fmt.Println("URL is  %v:",l.URL)
-      fmt.Println("number of lytes loded are %v",l.bytes)
+      fmt.Println("number of bytes loaded are %v",l.bytes)
       fmt.Println("time taken is : %v", l.time)
   }
 
 func crawl(pfunc func(Lang), lang Lang){
   var ttime time.Duration
   url:= [3]string{"https://www.python.org/", "https://www.ruby-lang.org/en/","https://golang.org/"}
-  for _,url_val := range url {
+  var nameSet = [3]string{"Python","Ruby","Golang"}
+  now := time.Now()
+  for i,url_val := range url {
+    lang.Name = nameSet[i]
     lang.URL = url_val
     lang.bytes,lang.time = retrieve(url_val)
-    ttime=ttime+lang.time
+    
     pfunc(lang)
 
   }
+  ttime = time.Since(now)
   fmt.Println("total time to crawl 3 sites id %v", ttime)
 
 }
